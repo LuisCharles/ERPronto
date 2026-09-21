@@ -4,10 +4,10 @@
 
 CREATE TABLE IF NOT EXISTS public."Perfis"
 (
-    "ID" "char" NOT NULL,
-    nome "char",
-    descricao "char",
-    CONSTRAINT "Perfis_pkey" PRIMARY KEY ("ID")
+    id serial NOT NULL,
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    descricao character varying COLLATE pg_catalog."default",
+    CONSTRAINT "Perfis_pkey" PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;

@@ -4,14 +4,14 @@
 
 CREATE TABLE IF NOT EXISTS public.movimentacoes_estoque
 (
-    "ID " "char" NOT NULL,
-    produto_id numeric,
-    usuario_id numeric,
-    tipo "char",
-    quantidade numeric,
-    observacao "char",
-    criado_em "char",
-    CONSTRAINT movimentacoes_estoque_pkey PRIMARY KEY ("ID ")
+    id serial NOT NULL,
+    produto_id integer NOT NULL,
+    usuario_id integer NOT NULL,
+    tipo character varying COLLATE pg_catalog."default" NOT NULL,
+    quantidade numeric NOT NULL,
+    observacao character varying COLLATE pg_catalog."default",
+    criado_em timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT movimentacoes_estoque_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;

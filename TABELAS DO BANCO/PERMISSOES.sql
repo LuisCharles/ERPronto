@@ -1,16 +1,16 @@
--- Table: public.Permissoes
+-- Table: public.permissoes
 
--- DROP TABLE IF EXISTS public."Permissoes";
+-- DROP TABLE IF EXISTS public.permissoes;
 
-CREATE TABLE IF NOT EXISTS public."Permissoes"
+CREATE TABLE IF NOT EXISTS public.permissoes
 (
-    "ID" "char" NOT NULL,
-    nome "char",
-    descricao "char",
-    CONSTRAINT "Permissoes_pkey" PRIMARY KEY ("ID")
+    id serial NOT NULL,
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    descricao character varying COLLATE pg_catalog."default",
+    CONSTRAINT permissoes_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public."Permissoes"
+ALTER TABLE IF EXISTS public.permissoes
     OWNER to postgres;

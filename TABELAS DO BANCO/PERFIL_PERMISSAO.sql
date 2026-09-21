@@ -4,8 +4,8 @@
 
 CREATE TABLE IF NOT EXISTS public.perfil_permissao
 (
-    perfil_id "char" NOT NULL,
-    permissao_id "char",
+    perfil_id integer NOT NULL,
+    permissao_id integer NOT NULL,
     CONSTRAINT perfil_permissao_pkey PRIMARY KEY (perfil_id)
 )
 
