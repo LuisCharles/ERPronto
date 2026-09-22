@@ -1,0 +1,14 @@
+<div class="alert d-flex align-items-center" [class]="'alert-' + tipo()" role="alert">
+  <i [class]="icone" class="me-2"></i>
+
+  <span class="flex-grow-1">{{ mensagem() }}</span>
+
+  @if (fechavel()) {
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Fechar"
+      (click)="fechado.emit()"
+    ></button>
+  }
+</div>

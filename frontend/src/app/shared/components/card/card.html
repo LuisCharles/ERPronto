@@ -1,0 +1,14 @@
+<div class="card shadow-sm border-0">
+  @if (titulo()) {
+    <div class="card-header bg-white fw-semibold">
+      @if (icone()) {
+        <i [class]="icone()" class="me-2 text-primary"></i>
+      }
+      {{ titulo() }}
+    </div>
+  }
+
+  <div class="card-body">
+    <ng-content></ng-content>
+  </div>
+</div>

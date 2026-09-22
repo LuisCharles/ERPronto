@@ -1,0 +1,15 @@
+<button
+  [type]="tipo()"
+  class="btn"
+  [class]="'btn-' + variante()"
+  [disabled]="desabilitado() || carregando()"
+  (click)="aoClicar()"
+>
+  @if (carregando()) {
+    <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+  } @else if (icone()) {
+    <i [class]="icone()" class="me-2"></i>
+  }
+
+  {{ texto() }}
+</button>
