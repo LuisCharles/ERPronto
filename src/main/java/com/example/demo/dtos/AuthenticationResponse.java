@@ -1,4 +1,4 @@
-package com.example.demo.dtos;
+package com.example.demo.dtos; // Aqui
 
 public class AuthenticationResponse {
     private String token;
