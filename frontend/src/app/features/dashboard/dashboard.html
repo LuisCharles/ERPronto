@@ -1,0 +1,53 @@
+<div class="mb-4">
+  <h1 class="h3 fw-semibold mb-1">Bem-vindo(a) ao ErpPronto</h1>
+  <p class="text-muted">
+    Esta página é só um exemplo mostrando os componentes reutilizáveis do
+    projeto. Veja o código em <code>src/app/features/dashboard</code>.
+  </p>
+</div>
+
+@if (mostrarAlerta()) {
+  <app-alerta
+    class="d-block mb-4"
+    tipo="info"
+    mensagem="Dica: os componentes usados aqui ficam em src/app/shared/components."
+    [fechavel]="true"
+    (fechado)="mostrarAlerta.set(false)"
+  />
+}
+
+<div class="row g-4">
+  <div class="col-12 col-lg-6">
+    <app-card titulo="Botões" icone="fa-solid fa-hand-pointer">
+      <div class="d-flex flex-wrap gap-2">
+        <app-botao texto="Primário" variante="primary" />
+        <app-botao texto="Secundário" variante="secondary" />
+        <app-botao texto="Perigo" variante="danger" icone="fa-solid fa-trash" />
+        <app-botao texto="Sucesso" variante="success" icone="fa-solid fa-check" />
+        <app-botao
+          [texto]="carregandoExemplo() ? 'Carregando...' : 'Simular carregamento'"
+          [carregando]="carregandoExemplo()"
+          (clicado)="simularCarregamento()"
+        />
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <app-card titulo="Spinner de carregamento" icone="fa-solid fa-spinner">
+      <app-loading-spinner texto="Buscando informações..." />
+    </app-card>
+  </div>
+
+  <div class="col-12">
+    <app-card titulo="Sobre esta estrutura" icone="fa-solid fa-graduation-cap">
+      <p class="mb-2">Pastas principais dentro de <code>src/app</code>:</p>
+      <ul class="mb-0">
+        <li><code>core/</code> — serviços, guards e interceptors (lógica de infraestrutura).</li>
+        <li><code>layouts/</code> — "moldes" de tela (com ou sem menu/navbar).</li>
+        <li><code>shared/components/</code> — componentes reutilizáveis em qualquer tela.</li>
+        <li><code>features/</code> — as telas/páginas do sistema, uma pasta por assunto.</li>
+      </ul>
+    </app-card>
+  </div>
+</div>

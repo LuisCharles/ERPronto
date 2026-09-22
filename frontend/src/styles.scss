@@ -1,0 +1,23 @@
+// ============================================================
+// Ponto de entrada dos estilos globais da aplicação.
+// A ordem de importação importa (trocadilho intencional):
+// ============================================================
+
+// 1) Funções do Bootstrap (precisam vir primeiro, outras partes dependem delas)
+@import 'bootstrap/scss/functions';
+
+// 2) Nossas variáveis, sobrescrevendo os padrões do Bootstrap
+@import 'styles/variaveis';
+
+// 3) O Bootstrap completo (grid, componentes, utilitários...)
+@import 'bootstrap/scss/bootstrap';
+
+// 4) Estilos globais próprios da aplicação
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #f4f6fb;
+}

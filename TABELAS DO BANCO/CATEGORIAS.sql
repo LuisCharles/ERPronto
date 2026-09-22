@@ -4,11 +4,11 @@
 
 CREATE TABLE IF NOT EXISTS public.categorias
 (
-    "ID " character(1) COLLATE pg_catalog."default" NOT NULL,
-    nome "char",
-    descricao "char",
-    ativo "char",
-    CONSTRAINT categorias_pkey PRIMARY KEY ("ID ")
+    nome character varying COLLATE pg_catalog."default" NOT NULL,
+    descricao character varying COLLATE pg_catalog."default",
+    ativo boolean NOT NULL DEFAULT true,
+    "ID" serial NOT NULL,
+    CONSTRAINT categorias_pkey PRIMARY KEY ("ID")
 )
 
 TABLESPACE pg_default;

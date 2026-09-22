@@ -1,0 +1,65 @@
+<app-card>
+  <div class="text-center mb-4">
+    <i class="fa-solid fa-building-columns fa-2x text-primary mb-2"></i>
+    <h1 class="h4 fw-semibold mb-1">ErpPronto</h1>
+    <p class="text-muted mb-0">Entre com sua conta para continuar</p>
+  </div>
+
+  @if (mensagemErro()) {
+    <app-alerta
+      class="d-block mb-3"
+      tipo="danger"
+      [mensagem]="mensagemErro()!"
+      [fechavel]="true"
+      (fechado)="mensagemErro.set(null)"
+    />
+  }
+
+  <form [formGroup]="form" (ngSubmit)="entrar()" novalidate>
+    <div class="mb-3">
+      <label for="email" class="form-label">E-mail</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          [class.is-invalid]="emailInvalido"
+          formControlName="email"
+          placeholder="voce@empresa.com"
+          autocomplete="username"
+        />
+      </div>
+      @if (emailInvalido) {
+        <div class="text-danger small mt-1">Informe um e-mail válido.</div>
+      }
+    </div>
+
+    <div class="mb-4">
+      <label for="senha" class="form-label">Senha</label>
+      <div class="input-group">
+        <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+        <input
+          id="senha"
+          type="password"
+          class="form-control"
+          [class.is-invalid]="senhaInvalida"
+          formControlName="senha"
+          placeholder="••••••••"
+          autocomplete="current-password"
+        />
+      </div>
+      @if (senhaInvalida) {
+        <div class="text-danger small mt-1">A senha deve ter ao menos 4 caracteres.</div>
+      }
+    </div>
+
+    <app-botao
+      texto="Entrar"
+      icone="fa-solid fa-right-to-bracket"
+      tipo="submit"
+      [carregando]="carregando()"
+      class="d-grid"
+    />
+  </form>
+</app-card>

@@ -4,18 +4,18 @@
 
 CREATE TABLE IF NOT EXISTS public.contas_financeiras
 (
-    "ID" character(1) COLLATE pg_catalog."default" NOT NULL,
-    tipo numeric,
-    descricao "char",
-    valor numeric,
-    data_vencimento numeric,
-    data_pagamento numeric,
-    status "char",
-    venda_id numeric,
-    compra_id numeric,
-    criado_em "char",
-    atualizado_em "char",
-    CONSTRAINT contas_financeiras_pkey PRIMARY KEY ("ID")
+    id serial NOT NULL,
+    tipo character varying COLLATE pg_catalog."default" NOT NULL,
+    descricao character varying COLLATE pg_catalog."default" NOT NULL,
+    valor numeric NOT NULL,
+    data_vencimento date NOT NULL,
+    data_pagamento date,
+    status character varying COLLATE pg_catalog."default" NOT NULL,
+    venda_id integer,
+    compra_id integer,
+    criado_em timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em timestamp with time zone,
+    CONSTRAINT contas_financeiras_pkey PRIMARY KEY (id)
 )
 
 TABLESPACE pg_default;
