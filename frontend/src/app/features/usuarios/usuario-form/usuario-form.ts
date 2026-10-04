@@ -79,6 +79,7 @@ export class UsuarioForm {
         error: (erro: HttpErrorResponse) => this.mensagemErro.set(this.traduzirErro(erro)),
       });
   }
+  //peidei na farofa
 
   /** Transforma o erro HTTP em uma mensagem que o usuário entende. */
   private traduzirErro(erro: HttpErrorResponse): string {
