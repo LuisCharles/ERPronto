@@ -1,0 +1,118 @@
+<div class="mb-4">
+  <a class="text-decoration-none small" routerLink="/usuarios">
+    <i class="fa-solid fa-arrow-left me-1"></i>
+    Voltar para usuários
+  </a>
+  <h1 class="h3 fw-semibold mt-2 mb-1">Novo usuário</h1>
+  <p class="text-muted mb-0">Preencha os dados para dar acesso ao sistema.</p>
+</div>
+
+@if (mensagemErro()) {
+  <app-alerta
+    class="d-block mb-4"
+    tipo="danger"
+    [mensagem]="mensagemErro()!"
+    [fechavel]="true"
+    (fechado)="mensagemErro.set(null)"
+  />
+}
+
+<app-card titulo="Dados do usuário" icone="fa-solid fa-user">
+  <form [formGroup]="form" (ngSubmit)="salvar()" novalidate>
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
+        <input
+          id="nome"
+          type="text"
+          class="form-control"
+          [class.is-invalid]="campoInvalido('nome')"
+          formControlName="nome"
+          placeholder="Nome completo"
+          autocomplete="name"
+        />
+        @if (campoInvalido('nome')) {
+          <div class="invalid-feedback">Informe o nome (até 100 caracteres).</div>
+        }
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="email" class="form-label">E-mail <span class="text-danger">*</span></label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          [class.is-invalid]="campoInvalido('email')"
+          formControlName="email"
+          placeholder="pessoa@empresa.com"
+          autocomplete="off"
+        />
+        @if (campoInvalido('email')) {
+          <div class="invalid-feedback">Informe um e-mail válido.</div>
+        }
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
+        <input
+          id="senha"
+          type="password"
+          class="form-control"
+          [class.is-invalid]="campoInvalido('senha')"
+          formControlName="senha"
+          placeholder="••••••••"
+          autocomplete="new-password"
+        />
+        @if (campoInvalido('senha')) {
+          <div class="invalid-feedback">A senha deve ter ao menos 6 caracteres.</div>
+        }
+      </div>
+
+      <div class="col-12 col-md-6">
+        <!--
+          Enquanto o backend não tiver o endpoint de perfis (/api/perfis),
+          o perfil é informado pelo ID. Quando existir, troque este input
+          por um <select> preenchido com a lista de perfis.
+        -->
+        <label for="perfilId" class="form-label">Perfil <span class="text-danger">*</span></label>
+        <input
+          id="perfilId"
+          type="number"
+          min="1"
+          class="form-control"
+          [class.is-invalid]="campoInvalido('perfilId')"
+          formControlName="perfilId"
+          placeholder="Ex: 1"
+        />
+        @if (campoInvalido('perfilId')) {
+          <div class="invalid-feedback">Informe o ID de um perfil existente.</div>
+        }
+      </div>
+
+      <div class="col-12">
+        <div class="form-check form-switch">
+          <input
+            id="ativo"
+            type="checkbox"
+            class="form-check-input"
+            role="switch"
+            formControlName="ativo"
+          />
+          <label for="ativo" class="form-check-label">Usuário ativo (pode entrar no sistema)</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="d-flex justify-content-end gap-2">
+      <a class="btn btn-secondary" routerLink="/usuarios">Cancelar</a>
+      <app-botao
+        texto="Salvar"
+        icone="fa-solid fa-floppy-disk"
+        tipo="submit"
+        [carregando]="salvando()"
+      />
+    </div>
+  </form>
+</app-card>

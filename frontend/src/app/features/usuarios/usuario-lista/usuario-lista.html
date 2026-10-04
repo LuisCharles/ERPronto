@@ -1,0 +1,93 @@
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+  <div>
+    <h1 class="h3 fw-semibold mb-1">Usuários</h1>
+    <p class="text-muted mb-0">Pessoas que têm acesso ao sistema.</p>
+  </div>
+
+  <a class="btn btn-primary" routerLink="/usuarios/novo">
+    <i class="fa-solid fa-plus me-2"></i>
+    Novo usuário
+  </a>
+</div>
+
+@if (mensagemSucesso()) {
+  <app-alerta
+    class="d-block mb-4"
+    tipo="success"
+    [mensagem]="mensagemSucesso()!"
+    [fechavel]="true"
+    (fechado)="mensagemSucesso.set(null)"
+  />
+}
+
+<app-card>
+  <div class="mb-3">
+    <div class="input-group busca">
+      <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Buscar por nome ou e-mail"
+        aria-label="Buscar usuários"
+        [value]="termoBusca()"
+        (input)="buscar($event)"
+      />
+    </div>
+  </div>
+
+  @if (carregando()) {
+    <app-loading-spinner texto="Carregando usuários..." />
+  } @else if (mensagemErro()) {
+    <app-alerta tipo="danger" [mensagem]="mensagemErro()!" />
+    <button type="button" class="btn btn-outline-primary" (click)="carregar()">
+      <i class="fa-solid fa-rotate-right me-2"></i>
+      Tentar novamente
+    </button>
+  } @else if (usuariosFiltrados().length === 0) {
+    <div class="text-center text-muted py-5">
+      <i class="fa-solid fa-users fa-2x mb-2"></i>
+      <p class="mb-0">
+        @if (termoBusca()) {
+          Nenhum usuário encontrado para "{{ termoBusca() }}".
+        } @else {
+          Nenhum usuário cadastrado ainda.
+        }
+      </p>
+    </div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Perfil</th>
+            <th scope="col">Status</th>
+            <th scope="col">Criado em</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (usuario of usuariosFiltrados(); track usuario.id) {
+            <tr>
+              <td class="fw-semibold">{{ usuario.nome }}</td>
+              <td>{{ usuario.email }}</td>
+              <td>#{{ usuario.perfilId }}</td>
+              <td>
+                @if (usuario.ativo) {
+                  <span class="badge text-bg-success">Ativo</span>
+                } @else {
+                  <span class="badge text-bg-secondary">Inativo</span>
+                }
+              </td>
+              <td>{{ usuario.criadoEm | date: 'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="text-muted small mt-3 mb-0">
+      Exibindo {{ usuariosFiltrados().length }} de {{ usuarios().length }} usuário(s).
+    </p>
+  }
+</app-card>

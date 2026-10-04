@@ -25,6 +25,16 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
       },
+      {
+        path: 'usuarios',
+        loadComponent: () =>
+          import('./features/usuarios/usuario-lista/usuario-lista').then((m) => m.UsuarioLista),
+      },
+      {
+        path: 'usuarios/novo',
+        loadComponent: () =>
+          import('./features/usuarios/usuario-form/usuario-form').then((m) => m.UsuarioForm),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },
