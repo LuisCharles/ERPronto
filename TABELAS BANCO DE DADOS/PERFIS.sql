@@ -1,0 +1,8 @@
+CREATE TABLE dbo.perfis (
+ id INT IDENTITY(1,1) NOT NULL,
+ nome VARCHAR(50) NOT NULL,
+ descricao VARCHAR(150) NULL,
+ CONSTRAINT PK_perfis PRIMARY KEY (id),
+ CONSTRAINT UQ_perfis_nome UNIQUE (nome)
+);
+GO

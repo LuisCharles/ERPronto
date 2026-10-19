@@ -1,26 +1,24 @@
+package com.example.demo.entities;
 
-package com.example.demo.entities; //Altera aqui AbuDabhi
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
-//@entity quer dizer "Essa classe representa uma tabela no BD" --Luiz
 @Entity
+@Table(name = "usuarios")
+public class Usuario {
 
-//@Table = especifíca a tabela (anota ai Leozin)
-// Não tem ; nas linhas com @
-// Basicamente temos que representar a tabela no códio
-@Table(name = "Usuarios")
-public class Usuario{
     @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // O banco gera o ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "senha_hash", nullable = false)
     private String senhaHash;
 
@@ -28,76 +26,90 @@ public class Usuario{
     private Integer perfilId;
 
     @Column(nullable = false)
-    private Boolean ativo;
+    private Boolean ativo = true;
 
     @Column(name = "atualizado_em")
-    private OffsetDateTime atualizadoEm;
+    private LocalDateTime atualizadoEm;
 
-    @Column(name = "criado_em", nullable = false)
-    private OffsetDateTime criadoEm;
+    @Column(name = "criado_em", nullable = false, updatable = false)
+    private LocalDateTime criadoEm;
 
-    // Getters e Setters igual a luciene ensinou
-    public Integer getId(){
+    @PrePersist
+    protected void onCreate() {
+        if (this.criadoEm == null) {
+            this.criadoEm = LocalDateTime.now();
+        }
+        if (this.ativo == null) {
+            this.ativo = true;
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.atualizadoEm = LocalDateTime.now();
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id){
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getNome(){
+    public String getNome() {
         return nome;
     }
 
-    public void setNome(String nome){
-        this.nome;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getEmail(){
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email){
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getSenhaHash(){
+    public String getSenhaHash() {
         return senhaHash;
     }
 
-    public setSenhaHash(String senhaHash){
+    public void setSenhaHash(String senhaHash) {
         this.senhaHash = senhaHash;
     }
 
-    public Integer getPerfilId(){
+    public Integer getPerfilId() {
         return perfilId;
     }
 
-    public void setPerfilId(Integer perfilId){
+    public void setPerfilId(Integer perfilId) {
         this.perfilId = perfilId;
     }
 
-    public Boolean getAtivo(){
+    public Boolean getAtivo() {
         return ativo;
     }
 
-    public void setAtivo(Boolean ativo){
+    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 
-    public OffsetDateTime getAtualizadoEm(){
+    public LocalDateTime getAtualizadoEm() {
         return atualizadoEm;
     }
 
-    public void setAtualizadoEm(OffsetDateTime atualizadoEm){
+    public void setAtualizadoEm(LocalDateTime atualizadoEm) {
         this.atualizadoEm = atualizadoEm;
     }
 
-    public OffsetDateTime getCriadoEm(){
+    public LocalDateTime getCriadoEm() {
         return criadoEm;
     }
 
-    public void setCriadoEm(OffsetDateTime criadoEm){
+    public void setCriadoEm(LocalDateTime criadoEm) {
         this.criadoEm = criadoEm;
     }
 }
