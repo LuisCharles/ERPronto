@@ -15,6 +15,9 @@ CREATE TABLE dbo.contas_financeiras (
  CONSTRAINT FK_contas_financeiras_compras FOREIGN KEY (compra_id) REFERENCES dbo.compras(id),
  CONSTRAINT CK_contas_financeiras_tipo CHECK (tipo IN ('PAGAR','RECEBER')),
  CONSTRAINT CK_contas_financeiras_valor CHECK (valor > 0),
- CONSTRAINT CK_contas_financeiras_status CHECK (status IN ('PENDENTE','PAGO','VENCIDO','CANCELADO'))
+CONSTRAINT CK_contas_financeiras_status CHECK (status IN ('PENDENTE','PAGO','VENCIDO','CANCELADO')),
+
+CONSTRAINT CK_contas_financeiras_origem CHECK (
+    venda_id IS NULL OR compra_id IS NULL
 );
 GO
