@@ -19,5 +19,6 @@ CONSTRAINT CK_contas_financeiras_status CHECK (status IN ('PENDENTE','PAGO','VEN
 
 CONSTRAINT CK_contas_financeiras_origem CHECK (
     venda_id IS NULL OR compra_id IS NULL
+ )
 );
 GO
