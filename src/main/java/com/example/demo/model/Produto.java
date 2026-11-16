@@ -1,7 +1,8 @@
-package com.example.demo.entities;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 @Entity
@@ -48,13 +49,46 @@ public class Produto {
 
     @PrePersist
     protected void onCreate() {
-        this.criadoEm = LocalDateTime.now();
+        if (this.criadoEm == null) this.criadoEm = LocalDateTime.now();
         if (this.ativo == null) this.ativo = true;
     }
 
     @PreUpdate
     protected void onUpdate() {
         this.atualizadoEm = LocalDateTime.now();
+    }
+
+    public void adicionarEstoque(BigDecimal quantidade) {
+        exigirPositivo(quantidade);
+        this.estoqueAtual = this.estoqueAtual.add(quantidade);
+    }
+
+    /** O estoque nunca pode ficar negativo. */
+    public void removerEstoque(BigDecimal quantidade) {
+        exigirPositivo(quantidade);
+        if (quantidade.compareTo(this.estoqueAtual) > 0) {
+            throw new IllegalStateException(
+                "Estoque insuficiente para o produto \"" + nome + "\": disponível " + estoqueAtual + ", pedido " + quantidade + ".");
+        }
+        this.estoqueAtual = this.estoqueAtual.subtract(quantidade);
+    }
+
+    public boolean isEstoqueBaixo() {
+        return estoqueAtual.compareTo(estoqueMinimo) <= 0;
+    }
+
+    /** Margem em %: (venda - custo) / venda * 100. Produto sem preço de venda tem margem 0. */
+    public BigDecimal calcularMargemLucro() {
+        if (precoVenda == null || precoVenda.signum() == 0) return BigDecimal.ZERO.setScale(2);
+        return precoVenda.subtract(precoCusto)
+                .multiply(BigDecimal.valueOf(100))
+                .divide(precoVenda, 2, RoundingMode.HALF_UP);
+    }
+
+    private static void exigirPositivo(BigDecimal quantidade) {
+        if (quantidade == null || quantidade.signum() <= 0) {
+            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
+        }
     }
 
     // Getters e Setters

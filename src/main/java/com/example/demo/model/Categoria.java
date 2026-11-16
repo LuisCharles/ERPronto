@@ -1,4 +1,4 @@
-package com.example.demo.entities;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 
@@ -19,7 +19,11 @@ public class Categoria {
     @Column(nullable = false)
     private Boolean ativo = true;
 
-    // Getters and Setters
+    public void ativar() { this.ativo = true; }
+
+    /** Categoria com produtos não é apagada: só desativada. */
+    public void desativar() { this.ativo = false; }
+
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
     public String getNome() { return nome; }
@@ -27,5 +31,6 @@ public class Categoria {
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
     public Boolean getAtivo() { return ativo; }
-    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
+    // A coluna não aceita vazio: sem valor informado, fica ativa.
+    public void setAtivo(Boolean ativo) { this.ativo = ativo != null ? ativo : true; }
 }

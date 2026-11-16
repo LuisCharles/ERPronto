@@ -1,7 +1,7 @@
 package com.example.demo.security;
 
-import com.example.demo.entities.Perfil;
-import com.example.demo.entities.Usuario;
+import com.example.demo.model.Perfil;
+import com.example.demo.model.Usuario;
 import com.example.demo.repositories.PerfilRepositorio;
 import com.example.demo.repositories.UsuarioRepositorio;
 import org.springframework.boot.CommandLineRunner;
@@ -42,7 +42,7 @@ public class DataInitializer implements CommandLineRunner {
             admin.setNome("Administrador");
             admin.setEmail("admin@erp.com");
             admin.setSenhaHash(passwordEncoder.encode("admin123"));
-            admin.setPerfilId(perfilAdmin.getId());
+            admin.setPerfil(perfilAdmin);
             admin.setAtivo(true);
             usuarioRepositorio.save(admin);
             System.out.println(">>> Usuário admin@erp.com criado no banco com sucesso!");

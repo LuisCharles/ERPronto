@@ -1,7 +1,9 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dtos.UsuarioRequestDTO;
-import com.example.demo.entities.Usuario;
+import com.example.demo.model.Usuario;
+import com.example.demo.model.Perfil;
+import com.example.demo.repositories.PerfilRepositorio;
 import com.example.demo.repositories.UsuarioRepositorio;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,13 @@ import java.util.List;
 public class UsuarioController {
 
     private final UsuarioRepositorio usuarioRepositorio;
+    private final PerfilRepositorio perfilRepositorio;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioController(UsuarioRepositorio usuarioRepositorio, PasswordEncoder passwordEncoder) {
+    public UsuarioController(UsuarioRepositorio usuarioRepositorio, PerfilRepositorio perfilRepositorio,
+                             PasswordEncoder passwordEncoder) {
         this.usuarioRepositorio = usuarioRepositorio;
+        this.perfilRepositorio = perfilRepositorio;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -33,11 +38,17 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("E-mail já cadastrado.");
         }
 
+        Integer perfilId = dto.getPerfilId() != null ? dto.getPerfilId() : 1;
+        Perfil perfil = perfilRepositorio.findById(perfilId).orElse(null);
+        if (perfil == null) {
+            return ResponseEntity.badRequest().body("Perfil " + perfilId + " não encontrado.");
+        }
+
         Usuario novo = new Usuario();
         novo.setNome(dto.getNome());
         novo.setEmail(dto.getEmail());
         novo.setSenhaHash(passwordEncoder.encode(dto.getSenha()));
-        novo.setPerfilId(dto.getPerfilId() != null ? dto.getPerfilId() : 1);
+        novo.setPerfil(perfil);
         novo.setAtivo(dto.getAtivo() != null ? dto.getAtivo() : true);
 
         Usuario salvo = usuarioRepositorio.save(novo);

@@ -1,26 +1,31 @@
-package com.example.demo.entities;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Dados comuns a Cliente, Fornecedor e Usuario.
+ * JOINED: a tabela "pessoas" guarda estes campos e cada subclasse tem sua
+ * própria tabela só com o que é dela (igual ao script ERPronto_Banco_Final.sql).
+ */
 @Entity
-@Table(name = "fornecedores")
-public class Fornecedor {
+@Table(name = "pessoas")
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "razao_social", nullable = false, length = 120)
-    private String razaoSocial;
+    @Column(nullable = false, length = 120)
+    private String nome;
 
-    @Column(name = "nome_fantasia", length = 120)
-    private String nomeFantasia;
+    @Column(name = "cpf_cnpj", unique = true, length = 18)
+    private String cpfCnpj;
 
-    @Column(unique = true, length = 18)
-    private String cnpj;
-
-    @Column(length = 150)
+    @Column(unique = true, length = 150)
     private String email;
 
     @Column(length = 20)
@@ -44,9 +49,6 @@ public class Fornecedor {
     @Column(length = 9)
     private String cep;
 
-    @Column(nullable = false)
-    private Boolean ativo = true;
-
     @Column(name = "criado_em", nullable = false, updatable = false)
     private LocalDateTime criadoEm;
 
@@ -55,8 +57,7 @@ public class Fornecedor {
 
     @PrePersist
     protected void onCreate() {
-        this.criadoEm = LocalDateTime.now();
-        if (this.ativo == null) this.ativo = true;
+        if (this.criadoEm == null) this.criadoEm = LocalDateTime.now();
     }
 
     @PreUpdate
@@ -64,15 +65,35 @@ public class Fornecedor {
         this.atualizadoEm = LocalDateTime.now();
     }
 
+    /** Ex.: "Rua A, 10 - Centro - São Paulo/SP - CEP 01000-000". Partes vazias são puladas. */
+    public String getEnderecoCompleto() {
+        List<String> partes = new ArrayList<>();
+        String ruaENumero = juntar(", ", logradouro, numero);
+        if (!ruaENumero.isEmpty()) partes.add(ruaENumero);
+        if (temTexto(bairro)) partes.add(bairro);
+        String cidadeEUf = juntar("/", cidade, estado);
+        if (!cidadeEUf.isEmpty()) partes.add(cidadeEUf);
+        if (temTexto(cep)) partes.add("CEP " + cep);
+        return String.join(" - ", partes);
+    }
+
+    private static String juntar(String separador, String... valores) {
+        List<String> preenchidos = new ArrayList<>();
+        for (String v : valores) if (temTexto(v)) preenchidos.add(v.trim());
+        return String.join(separador, preenchidos);
+    }
+
+    private static boolean temTexto(String valor) {
+        return valor != null && !valor.isBlank();
+    }
+
     // Getters e Setters
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-    public String getRazaoSocial() { return razaoSocial; }
-    public void setRazaoSocial(String razaoSocial) { this.razaoSocial = razaoSocial; }
-    public String getNomeFantasia() { return nomeFantasia; }
-    public void setNomeFantasia(String nomeFantasia) { this.nomeFantasia = nomeFantasia; }
-    public String getCnpj() { return cnpj; }
-    public void setCnpj(String cnpj) { this.cnpj = cnpj; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public String getCpfCnpj() { return cpfCnpj; }
+    public void setCpfCnpj(String cpfCnpj) { this.cpfCnpj = cpfCnpj; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getTelefone() { return telefone; }
@@ -89,8 +110,6 @@ public class Fornecedor {
     public void setEstado(String estado) { this.estado = estado; }
     public String getCep() { return cep; }
     public void setCep(String cep) { this.cep = cep; }
-    public Boolean getAtivo() { return ativo; }
-    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
     public LocalDateTime getCriadoEm() { return criadoEm; }
     public void setCriadoEm(LocalDateTime criadoEm) { this.criadoEm = criadoEm; }
     public LocalDateTime getAtualizadoEm() { return atualizadoEm; }
