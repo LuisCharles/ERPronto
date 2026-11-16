@@ -1,9 +1,8 @@
 package com.example.demo.security;
 
-import com.example.demo.entities.Perfil;
-import com.example.demo.entities.Permissao;
-import com.example.demo.entities.Usuario;
-import com.example.demo.repositories.PerfilRepositorio;
+import com.example.demo.model.Perfil;
+import com.example.demo.model.Permissao;
+import com.example.demo.model.Usuario;
 import com.example.demo.repositories.UsuarioRepositorio;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,17 +14,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UsuarioRepositorio usuarioRepositorio;
-    private final PerfilRepositorio perfilRepositorio;
 
-    public CustomUserDetailsService(UsuarioRepositorio usuarioRepositorio, PerfilRepositorio perfilRepositorio) {
+    public CustomUserDetailsService(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
-        this.perfilRepositorio = perfilRepositorio;
     }
 
     @Override
@@ -40,9 +36,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         // Busca o Perfil e suas Permissões no banco para montar as Roles
-        Optional<Perfil> perfilOpt = perfilRepositorio.findById(usuario.getPerfilId());
-        if (perfilOpt.isPresent()) {
-            Perfil perfil = perfilOpt.get();
+        Perfil perfil = usuario.getPerfil();
+        if (perfil != null) {
             String roleName = perfil.getNome().toUpperCase().startsWith("ROLE_")
                     ? perfil.getNome().toUpperCase()
                     : "ROLE_" + perfil.getNome().toUpperCase();

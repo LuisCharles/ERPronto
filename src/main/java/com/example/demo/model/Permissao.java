@@ -1,4 +1,4 @@
-package com.example.demo.entities;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 
@@ -10,18 +10,17 @@ public class Permissao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    /** Código da permissão, ex.: VENDAS_CRIAR. */
+    @Column(nullable = false, unique = true, length = 80)
     private String nome;
 
-    @Column
+    @Column(length = 150)
     private String descricao;
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
-
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
-
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 }

@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.Fornecedor;
+import com.example.demo.model.Fornecedor;
 import com.example.demo.repositories.FornecedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +22,10 @@ public class FornecedorController {
 
     @PostMapping
     public Fornecedor criar(@RequestBody Fornecedor fornecedor) {
+        // "nome" (de Pessoa) é obrigatório; se não vier, usamos a razão social.
+        if (fornecedor.getNome() == null || fornecedor.getNome().isBlank()) {
+            fornecedor.setNome(fornecedor.getRazaoSocial());
+        }
         return repository.save(fornecedor);
     }
 
@@ -30,7 +34,8 @@ public class FornecedorController {
         return repository.findById(id).map(fornecedor -> {
             fornecedor.setRazaoSocial(detalhes.getRazaoSocial());
             fornecedor.setNomeFantasia(detalhes.getNomeFantasia());
-            fornecedor.setCnpj(detalhes.getCnpj());
+            if (detalhes.getNome() != null && !detalhes.getNome().isBlank()) fornecedor.setNome(detalhes.getNome());
+            fornecedor.setCpfCnpj(detalhes.getCpfCnpj());
             fornecedor.setEmail(detalhes.getEmail());
             fornecedor.setTelefone(detalhes.getTelefone());
             fornecedor.setLogradouro(detalhes.getLogradouro());
