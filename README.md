@@ -23,6 +23,7 @@ O escopo funcional documentado contempla:
 12. Dashboard: apresentação de indicadores operacionais e financeiros.
     
 Importante: esta lista descreve o escopo do projeto, não significa que todos os módulos já estejam implementados e integrados.
+
 3. Tecnologias e arquitetura
 Área	Tecnologia / situação
 Backend	Java 17, Spring Boot 3.2.0 e Maven
